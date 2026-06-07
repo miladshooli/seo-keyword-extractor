@@ -298,6 +298,35 @@ def api_sources():
     return jsonify({"queries": list_db_queries(RERANKER_DB)})
 
 
+@app.route("/api/delete_query", methods=["POST"])
+def api_delete_query():
+    p = request.get_json(silent=True) or {}
+    source = (p.get("source") or "db").strip()
+    query_id = p.get("query_id")
+    if source == "upload":
+        token = (p.get("upload_id") or "").strip()
+        db_path = os.path.join(UPLOAD_DIR, token + ".db")
+        if not token or not os.path.exists(db_path):
+            return jsonify({"error": "فایل آپلودشده پیدا نشد."}), 400
+    else:
+        db_path = RERANKER_DB
+        if not os.path.exists(db_path):
+            return jsonify({"error": "دیتابیس پیدا نشد."}), 400
+    if not query_id:
+        return jsonify({"error": "شناسهٔ نامعتبر."}), 400
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute("DELETE FROM chunks WHERE url_id IN (SELECT id FROM urls WHERE query_id=?)", (query_id,))
+        c.execute("DELETE FROM urls WHERE query_id=?", (query_id,))
+        c.execute("DELETE FROM queries WHERE id=?", (query_id,))
+        conn.commit()
+        conn.close()
+    except sqlite3.Error as e:
+        return jsonify({"error": f"خطا در حذف: {e}"}), 500
+    return jsonify({"ok": True, "queries": list_db_queries(db_path)})
+
+
 @app.route("/api/upload", methods=["POST"])
 def api_upload():
     f = request.files.get("db")
