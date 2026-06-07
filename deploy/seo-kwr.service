@@ -1,0 +1,21 @@
+[Unit]
+Description=SEO Keyword Research (hazm EmbedRank, Flask + Gunicorn)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/seo-kwr
+Environment="POS_MODEL=/opt/seo-kwr/models/pos_tagger.model"
+# Point this at the SEO Content Reranker's SQLite DB (sibling app) if present:
+Environment="RERANKER_DB=/opt/seo-reranker/data.db"
+Environment="KWR_UPLOAD_DIR=/opt/seo-kwr/uploads"
+# Embedding keys are entered in the UI by default. Optional fallbacks:
+# Environment="JINA_API_KEY=..."
+# Environment="VOYAGE_API_KEY=..."
+# 1 worker so the in-memory job registry + shared hazm tagger stay consistent.
+ExecStart=/opt/seo-kwr/venv/bin/gunicorn --workers 1 --threads 8 --timeout 120 --bind 127.0.0.1:8002 app:app
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

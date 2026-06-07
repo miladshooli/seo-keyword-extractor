@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>استخراج کلیدواژه SEO · EmbedRank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <style>
+    :root {
+      --p: #7c3aed; --p-h: #6d28d9; --on-p: #fff; --p-c: #ede9fe; --on-p-c: #3b1d80;
+      --accent: #db2777;
+      --surface: #fff; --surf-v: #f4f2fa; --bg: #efecf6;
+      --on-s: #1c1a22; --on-s-v: #5d586b; --outline: #ddd8ea;
+      --err: #ba1a1a; --ok: #1e8e3e;
+      --s1: 0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.08);
+      --s2: 0 4px 14px rgba(124,58,237,.15), 0 2px 6px rgba(0,0,0,.06); --r: 16px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --p: #c4b5fd; --p-h: #d6c9ff; --on-p: #2e1065; --p-c: #3c2a72; --on-p-c: #ede9fe;
+        --accent: #f9a8d4; --surface: #1a1820; --surf-v: #241f2e; --bg: #110f17;
+        --on-s: #e7e3f0; --on-s-v: #bcb4cd; --outline: #3a3348;
+        --s1: 0 1px 3px rgba(0,0,0,.4); --s2: 0 6px 18px rgba(0,0,0,.5); } }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: 'Vazirmatn', system-ui, sans-serif; background: var(--bg); color: var(--on-s);
+      line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    .material-symbols-rounded { font-family: 'Material Symbols Rounded'; line-height: 1; vertical-align: middle;
+      font-feature-settings: 'liga'; }
+    .topbar { background: linear-gradient(120deg, var(--p), var(--accent)); color: #fff; padding: 26px 20px 30px;
+      box-shadow: var(--s2); }
+    .topbar-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 14px; }
+    .topbar .logo { width: 52px; height: 52px; border-radius: 14px; background: rgba(255,255,255,.18);
+      display: grid; place-items: center; }
+    .topbar .logo .material-symbols-rounded { font-size: 30px; }
+    .topbar h1 { font-size: 1.35rem; font-weight: 700; margin: 0; }
+    .topbar p { margin: 2px 0 0; font-size: .82rem; opacity: .9; font-weight: 300; }
+    .container { max-width: 960px; margin: -14px auto 60px; padding: 0 16px; }
+    .card { background: var(--surface); border-radius: var(--r); box-shadow: var(--s1); padding: 22px;
+      margin-bottom: 18px; border: 1px solid var(--outline); }
+    label { display: flex; align-items: center; gap: 6px; font-size: .9rem; font-weight: 600; margin-bottom: 8px; }
+    label .material-symbols-rounded { font-size: 19px; color: var(--p); }
+    input, select { width: 100%; font-family: inherit; font-size: 1rem; padding: 12px 14px;
+      border: 1.5px solid var(--outline); border-radius: 12px; background: var(--surf-v); color: var(--on-s);
+      transition: border-color .15s, box-shadow .15s; }
+    input:focus, select:focus { outline: none; border-color: var(--p); background: var(--surface);
+      box-shadow: 0 0 0 3px var(--p-c); }
+    .field { margin-bottom: 18px; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; } .row > * { flex: 1; min-width: 120px; }
+    .hint { font-size: .77rem; color: var(--on-s-v); margin-top: 6px; }
+    .row-key { display: flex; gap: 8px; } .row-key input { flex: 1; }
+    .icon-btn { border: 1.5px solid var(--outline); background: var(--surf-v); border-radius: 12px; width: 48px;
+      cursor: pointer; color: var(--on-s-v); display: grid; place-items: center; }
+    .icon-btn:hover { background: var(--p-c); color: var(--on-p-c); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+      background: var(--p); color: var(--on-p); font-family: inherit; font-size: 1.02rem; font-weight: 600;
+      border: none; border-radius: 999px; padding: 14px 24px; cursor: pointer; box-shadow: var(--s2);
+      transition: background .15s, transform .08s; }
+    .btn:hover { background: var(--p-h); } .btn:active { transform: scale(.985); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; box-shadow: none; }
+    .btn-ghost { background: var(--surf-v); color: var(--p); box-shadow: none; border: 1.5px solid var(--outline); }
+    .btn-sm { width: auto; padding: 9px 16px; font-size: .85rem; }
+    .spinner { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,.45);
+      border-top-color: #fff; animation: spin .7s linear infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading .spinner { display: inline-block; }
+    details.settings summary { cursor: pointer; font-weight: 600; font-size: .92rem; padding: 6px 0;
+      display: flex; align-items: center; gap: 8px; list-style: none; }
+    details.settings summary::-webkit-details-marker { display: none; }
+    details.settings summary .material-symbols-rounded { color: var(--p); }
+    .alert { display: none; align-items: center; gap: 10px; background: #fdecec; color: var(--err);
+      border: 1px solid #f5c2c2; border-radius: 12px; padding: 12px 15px; margin-bottom: 16px; font-size: .9rem; }
+    @media (prefers-color-scheme: dark) { .alert { background: #3a1414; border-color: #6b2020; color: #ffb4ab; } }
+    .alert.show { display: flex; }
+    .seg { display: flex; gap: 8px; margin-bottom: 16px; }
+    .seg button { flex: 1; padding: 11px; border: 1.5px solid var(--outline); background: var(--surface);
+      border-radius: 12px; cursor: pointer; font-family: inherit; font-weight: 600; color: var(--on-s-v);
+      display: flex; align-items: center; justify-content: center; gap: 7px; font-size: .9rem; }
+    .seg button.active { background: var(--p); color: var(--on-p); border-color: var(--p); }
+    .qlist .qitem { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1.5px solid var(--outline);
+      border-radius: 12px; margin-bottom: 8px; cursor: pointer; }
+    .qitem:hover { border-color: var(--p); } .qitem.sel { border-color: var(--p); background: var(--p-c); }
+    .qitem .material-symbols-rounded { color: var(--p); } .qitem .q { font-weight: 600; flex: 1; }
+    .qitem .meta { font-size: .76rem; color: var(--on-s-v); }
+    .bar-track { height: 8px; border-radius: 999px; background: var(--surf-v); overflow: hidden; margin-bottom: 12px; }
+    .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--p));
+      width: 0; transition: width .4s; }
+    .prog-wrap { display: none; } .prog-wrap.show { display: block; }
+    .log { font-family: ui-monospace, monospace; font-size: .8rem; background: var(--surf-v); border-radius: 12px;
+      padding: 12px 14px; max-height: 220px; overflow-y: auto; white-space: pre-wrap; color: var(--on-s-v); }
+    .log div { padding: 1px 0; }
+    .results-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .results-head h2 { font-size: 1.1rem; margin: 0; font-weight: 700; }
+    .freq-box { background: var(--surf-v); border-radius: 12px; padding: 14px; margin-bottom: 16px; }
+    .freq-box .t { font-weight: 600; font-size: .9rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .freq-box .t .material-symbols-rounded { color: var(--accent); }
+    .kw { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--outline);
+      color: var(--on-s); padding: 4px 11px; border-radius: 999px; font-size: .82rem; margin: 0 0 6px 6px; }
+    .kw .c { background: var(--p-c); color: var(--on-p-c); border-radius: 999px; font-size: .7rem; padding: 0 6px; font-weight: 700; }
+    .url-card { border: 1px solid var(--outline); border-radius: 14px; margin-bottom: 14px; overflow: hidden; }
+    .url-head { display: flex; align-items: center; gap: 12px; padding: 13px 14px; background: var(--surf-v); }
+    .rank-badge { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+      font-weight: 700; font-size: .78rem; background: var(--p); color: var(--on-p); }
+    .rank-badge.manual { background: var(--accent); font-size: .6rem; }
+    .url-meta { flex: 1; min-width: 0; } .url-title { font-weight: 600; font-size: .95rem; word-break: break-word; }
+    .url-link { font-size: .75rem; color: var(--on-s-v); text-decoration: none; direction: ltr; display: block; }
+    .kw-list { padding: 12px 14px; }
+    .kw-num { display: inline-flex; align-items: center; gap: 7px; background: var(--surf-v); border: 1px solid var(--outline);
+      padding: 5px 11px 5px 7px; border-radius: 999px; font-size: .85rem; margin: 0 0 7px 7px; }
+    .kw-num i { background: var(--p); color: var(--on-p); width: 19px; height: 19px; border-radius: 50%; display: grid;
+      place-items: center; font-style: normal; font-size: .68rem; font-weight: 700; }
+    .empty-kw { color: var(--on-s-v); font-size: .82rem; padding: 6px 0; }
+    footer { text-align: center; font-size: .75rem; color: var(--on-s-v); padding: 6px 0 30px; }
+    .hidden { display: none !important; }
+    .filebox { border: 1.5px dashed var(--outline); border-radius: 12px; padding: 16px; text-align: center;
+      background: var(--surf-v); cursor: pointer; }
+    .filebox:hover { border-color: var(--p); }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="logo"><span class="material-symbols-rounded">key_visualizer</span></div>
+      <div>
+        <h1>استخراج کلیدواژه SEO</h1>
+        <p>از محتوای صفحات (دیتابیس reranker) با POS فارسی hazm + EmbedRank، کلیدواژه‌های مرتبط استخراج می‌کند</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="alert" class="alert"><span class="material-symbols-rounded">error</span><span id="alert-msg"></span></div>
+
+    <details class="settings card" id="settings">
+      <summary><span class="material-symbols-rounded">key</span> تنظیمات و کلید امبدینگ</summary>
+      <div style="margin-top:14px">
+        <div class="field">
+          <label for="provider"><span class="material-symbols-rounded">network_node</span> سرویس امبدینگ</label>
+          <select id="provider"><option value="jina">Jina</option><option value="voyage">Voyage</option></select>
+        </div>
+        <div class="field">
+          <label for="embedkey"><span class="material-symbols-rounded">vpn_key</span> کلید <span id="prov-name">Jina</span></label>
+          <div class="row-key">
+            <input type="password" id="embedkey" placeholder="کلید سرویس امبدینگ" />
+            <button type="button" class="icon-btn" id="eye"><span class="material-symbols-rounded">visibility</span></button>
+          </div>
+          <div class="hint" id="key-hint">برای امبدینگ عبارت‌ها. در مرورگر شما (به‌تفکیک سرویس) ذخیره می‌شود.</div>
+        </div>
+        <div class="row">
+          <div><label for="kwnum">تعداد کلیدواژه/صفحه</label><input type="number" id="kwnum" value="30" min="5" max="60" /></div>
+          <div><label for="maxchars">حداکثر کاراکتر محتوا</label><input type="number" id="maxchars" value="20000" min="2000" max="80000" step="1000" /></div>
+        </div>
+      </div>
+    </details>
+
+    <div class="card">
+      <div class="seg">
+        <button class="active" data-src="db"><span class="material-symbols-rounded">dns</span> دیتابیس روی سرور</button>
+        <button data-src="upload"><span class="material-symbols-rounded">upload_file</span> آپلود فایل .db</button>
+      </div>
+
+      <div id="src-upload" class="hidden field">
+        <label><span class="material-symbols-rounded">database</span> فایل دیتابیس reranker (.db)</label>
+        <div class="filebox" id="filebox"><span class="material-symbols-rounded" style="font-size:30px;color:var(--p)">cloud_upload</span>
+          <div id="file-label" style="margin-top:4px">یک فایل <code>.db</code> انتخاب کنید</div></div>
+        <input type="file" id="dbfile" accept=".db,.sqlite,.sqlite3" class="hidden" />
+      </div>
+
+      <div class="field">
+        <label><span class="material-symbols-rounded">history</span> یک تحلیل (کیورد) را انتخاب کنید</label>
+        <div id="qlist" class="qlist"><div class="hint">در حال بارگذاری…</div></div>
+      </div>
+
+      <button class="btn" id="run"><span class="spinner"></span><span class="material-symbols-rounded">key_visualizer</span> استخراج کلیدواژه</button>
+    </div>
+
+    <div class="card prog-wrap" id="prog">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:600">
+        <span class="spinner" style="display:inline-block;border-color:var(--p-c);border-top-color:var(--p)"></span>
+        <span id="prog-title">در حال پردازش…</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" id="prog-bar"></div></div>
+      <div class="log" id="log"></div>
+    </div>
+
+    <div class="card hidden" id="results-card">
+      <div class="results-head">
+        <h2>کلیدواژه‌های استخراج‌شده</h2>
+        <button class="btn btn-ghost btn-sm" id="export-btn" style="margin-inline-start:auto">
+          <span class="material-symbols-rounded">download</span> خروجی اکسل
+        </button>
+      </div>
+      <div id="freq" class="freq-box hidden"></div>
+      <div id="results"></div>
+    </div>
+
+    <footer>EmbedRank · hazm POS فارسی + امبدینگ Jina/Voyage · هم‌خانوادهٔ scorer عنوان و reranker محتوا</footer>
+  </div>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const SERVER_HAS_JINA = {{ 'true' if has_jina else 'false' }};
+    const SERVER_HAS_VOYAGE = {{ 'true' if has_voyage else 'false' }};
+    const LBL = { jina: 'Jina', voyage: 'Voyage' };
+    const serverHas = (p) => p === 'voyage' ? SERVER_HAS_VOYAGE : SERVER_HAS_JINA;
+    const providerSel = $('#provider'), embedkey = $('#embedkey');
+    const alertBox = $('#alert'), alertMsg = $('#alert-msg');
+    let source = 'db', selectedQid = null, uploadId = null, currentJob = null;
+
+    // restore
+    const storedKey = (p) => localStorage.getItem('kw_key_' + p) || '';
+    function applyProvider(p, load) {
+      $('#prov-name').textContent = LBL[p];
+      embedkey.placeholder = 'کلید ' + LBL[p] + ' خود را وارد کنید';
+      if (load) embedkey.value = storedKey(p);
+      $('#key-hint').textContent = serverHas(p) ? 'روی سرور تنظیم شده — می‌توانید خالی بگذارید.'
+        : 'برای امبدینگ عبارت‌ها. در مرورگر شما (به‌تفکیک سرویس) ذخیره می‌شود.';
+    }
+    const p0 = localStorage.getItem('kw_provider') || 'jina';
+    providerSel.value = p0; providerSel.dataset.cur = p0; applyProvider(p0, true);
+    $('#kwnum').value = localStorage.getItem('kw_num') || '30';
+    $('#maxchars').value = localStorage.getItem('kw_maxchars') || '20000';
+    if (!serverHas(p0) && !embedkey.value) $('#settings').open = true;
+
+    providerSel.addEventListener('change', () => {
+      const prev = providerSel.dataset.cur || 'jina';
+      localStorage.setItem('kw_key_' + prev, embedkey.value.trim());
+      const p = providerSel.value; providerSel.dataset.cur = p;
+      localStorage.setItem('kw_provider', p); applyProvider(p, true);
+    });
+    $('#eye').addEventListener('click', () => {
+      const show = embedkey.type === 'password'; embedkey.type = show ? 'text' : 'password';
+      $('#eye').querySelector('.material-symbols-rounded').textContent = show ? 'visibility_off' : 'visibility';
+    });
+
+    function showError(m) { alertMsg.textContent = m; alertBox.classList.add('show');
+      alertBox.scrollIntoView({behavior:'smooth', block:'center'}); }
+    function clearError() { alertBox.classList.remove('show'); }
+    function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; }
+
+    // source toggle
+    document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('.seg button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); source = b.dataset.src; selectedQid = null;
+      $('#src-upload').classList.toggle('hidden', source !== 'db' ? false : true);
+      if (source === 'db') { $('#src-upload').classList.add('hidden'); loadServerQueries(); }
+      else { $('#qlist').innerHTML = '<div class="hint">اول یک فایل .db آپلود کنید.</div>'; }
+    }));
+
+    function renderQueries(queries) {
+      const box = $('#qlist');
+      if (!queries || !queries.length) { box.innerHTML = '<div class="hint">هیچ تحلیلی پیدا نشد. (اول در اپ reranker یک تحلیل اجرا کنید یا فایل دیگری آپلود کنید.)</div>'; return; }
+      box.innerHTML = '';
+      queries.forEach(q => {
+        const el = document.createElement('div'); el.className = 'qitem';
+        el.innerHTML = `<span class="material-symbols-rounded">description</span>
+          <span class="q">${escapeHtml(q.query)}</span>
+          <span class="meta">${q.urls} صفحه · ${q.timestamp || ''}</span>`;
+        el.addEventListener('click', () => { document.querySelectorAll('.qitem').forEach(x => x.classList.remove('sel'));
+          el.classList.add('sel'); selectedQid = q.id; });
+        box.appendChild(el);
+      });
+    }
+
+    async function loadServerQueries() {
+      $('#qlist').innerHTML = '<div class="hint">در حال بارگذاری…</div>';
+      try { const d = await (await fetch('/api/sources')).json(); renderQueries(d.queries); }
+      catch (e) { $('#qlist').innerHTML = '<div class="hint">خطا در بارگذاری.</div>'; }
+    }
+    loadServerQueries();
+
+    // upload
+    $('#filebox').addEventListener('click', () => $('#dbfile').click());
+    $('#dbfile').addEventListener('change', async () => {
+      const f = $('#dbfile').files[0]; if (!f) return;
+      $('#file-label').textContent = 'در حال آپلود: ' + f.name;
+      const fd = new FormData(); fd.append('db', f);
+      try {
+        const d = await (await fetch('/api/upload', { method: 'POST', body: fd })).json();
+        if (d.error) throw new Error(d.error);
+        uploadId = d.upload_id; $('#file-label').textContent = '✓ ' + f.name;
+        renderQueries(d.queries);
+      } catch (e) { showError(e.message); $('#file-label').textContent = 'خطا، دوباره امتحان کنید'; }
+    });
+
+    $('#run').addEventListener('click', async () => {
+      clearError();
+      const provider = providerSel.value;
+      localStorage.setItem('kw_key_' + provider, embedkey.value.trim());
+      localStorage.setItem('kw_provider', provider);
+      localStorage.setItem('kw_num', $('#kwnum').value);
+      localStorage.setItem('kw_maxchars', $('#maxchars').value);
+      if (!serverHas(provider) && !embedkey.value.trim()) { $('#settings').open = true; return showError('کلید ' + LBL[provider] + ' لازم است (در تنظیمات).'); }
+      if (source === 'upload' && !uploadId) return showError('اول فایل .db را آپلود کنید.');
+      if (!selectedQid) return showError('یک تحلیل (کیورد) را از لیست انتخاب کنید.');
+      const body = { source, query_id: selectedQid, upload_id: uploadId, provider,
+        embed_key: embedkey.value.trim(), keyword_num: parseInt($('#kwnum').value), max_chars: parseInt($('#maxchars').value) };
+      const btn = $('#run'); btn.disabled = true; btn.classList.add('loading');
+      $('#results-card').classList.add('hidden'); $('#prog').classList.add('show');
+      $('#prog-bar').style.width = '0%'; $('#log').innerHTML = ''; $('#prog-title').textContent = 'در حال پردازش…';
+      try {
+        const d = await (await fetch('/api/extract', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) })).json();
+        if (d.error) throw new Error(d.error);
+        await pollJob(d.job_id);
+      } catch (e) { showError(e.message); $('#prog').classList.remove('show'); }
+      finally { btn.disabled = false; btn.classList.remove('loading'); }
+    });
+
+    let lastLen = 0;
+    async function pollJob(jobId) {
+      lastLen = 0;
+      while (true) {
+        await new Promise(r => setTimeout(r, 1500));
+        let d; try { d = await (await fetch('/api/job/' + jobId)).json(); } catch (e) { continue; }
+        if (d.log && d.log.length > lastLen) {
+          const lb = $('#log');
+          for (let i = lastLen; i < d.log.length; i++) { const x = document.createElement('div'); x.textContent = d.log[i]; lb.appendChild(x); }
+          lb.scrollTop = lb.scrollHeight; lastLen = d.log.length;
+        }
+        $('#prog-bar').style.width = (d.progress || 0) + '%';
+        if (d.status === 'done') { $('#prog-title').textContent = 'تمام شد ✓'; currentJob = jobId; renderResults(d.results); return; }
+        if (d.status === 'error') { $('#prog').classList.remove('show'); showError(d.error || 'خطا'); return; }
+      }
+    }
+
+    function renderResults(data) {
+      const items = data.items || [];
+      const freq = data.freq || [];
+      const fb = $('#freq');
+      if (freq.length) {
+        const top = freq.filter(f => f[1] > 1).slice(0, 25);
+        if (top.length) {
+          fb.innerHTML = '<div class="t"><span class="material-symbols-rounded">trending_up</span> کلیدواژه‌های پرتکرار بین صفحات</div>' +
+            top.map(f => `<span class="kw">${escapeHtml(f[0])}<span class="c">${f[1]}×</span></span>`).join('');
+          fb.classList.remove('hidden');
+        } else fb.classList.add('hidden');
+      } else fb.classList.add('hidden');
+
+      const box = $('#results'); box.innerHTML = '';
+      items.forEach(it => {
+        const card = document.createElement('div'); card.className = 'url-card';
+        const isManual = String(it.rank) === 'دستی';
+        let domain = it.url; try { domain = new URL(it.url).hostname.replace(/^www\./,''); } catch(e){}
+        const head = document.createElement('div'); head.className = 'url-head';
+        head.innerHTML = `<div class="rank-badge ${isManual?'manual':''}">${isManual?'دستی':(it.rank ?? '–')}</div>
+          <div class="url-meta"><div class="url-title">${escapeHtml(it.title || '(بدون عنوان)')}</div>
+          <a class="url-link" href="${it.url}" target="_blank" rel="noopener">${escapeHtml(domain)}</a></div>`;
+        card.appendChild(head);
+        const list = document.createElement('div'); list.className = 'kw-list';
+        const kws = it.keywords || [];
+        if (!kws.length) list.innerHTML = '<div class="empty-kw">کلیدواژه‌ای استخراج نشد (محتوای کافی نبود).</div>';
+        else list.innerHTML = kws.map((k, i) => `<span class="kw-num"><i>${i+1}</i>${escapeHtml(k)}</span>`).join('');
+        card.appendChild(list);
+        box.appendChild(card);
+      });
+      $('#export-btn').onclick = () => { if (currentJob) location.href = '/api/export/' + currentJob; };
+      $('#results-card').classList.remove('hidden');
+      $('#results-card').scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  </script>
+</body>
+</html>

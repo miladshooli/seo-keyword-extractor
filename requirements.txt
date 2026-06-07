@@ -1,0 +1,7 @@
+flask>=2.0
+gunicorn>=20.1
+requests>=2.25
+numpy>=1.21
+scikit-learn>=1.0
+hazm>=0.10
+openpyxl>=3.0
