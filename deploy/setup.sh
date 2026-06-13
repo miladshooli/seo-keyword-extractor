@@ -16,6 +16,8 @@ echo "==> App files -> $APP_DIR"
 mkdir -p "$APP_DIR/templates" "$APP_DIR/models" "$APP_DIR/uploads"
 cp "$REPO_DIR/app.py" "$APP_DIR/app.py"
 cp "$REPO_DIR/templates/index.html" "$APP_DIR/templates/index.html"
+cp "$REPO_DIR/serpiwi_auth.py" "$APP_DIR/serpiwi_auth.py"
+mkdir -p "$APP_DIR/static" && cp "$REPO_DIR/static/"*.png "$APP_DIR/static/"
 
 echo "==> Python venv + dependencies (hazm pulls numpy/scipy/sklearn/gensim — a few minutes)"
 python3 -m venv "$APP_DIR/venv"

@@ -41,6 +41,8 @@ GRAMMERS = [
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 64 * 1024 * 1024  # 64MB uploads
+from serpiwi_auth import init_auth
+init_auth(app, "Serpiwi · استخراج کلیدواژه")
 
 # load hazm once (shared, single worker)
 normalizer = Normalizer()
