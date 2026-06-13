@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>استخراج کلیدواژه SEO · EmbedRank</title>
+  <script>(function(){try{var m=document.cookie.match(/serpiwi_theme=(\w+)/);var t=m?m[1]:(localStorage.getItem('serpiwi_theme')||'system');var d=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.dataset.theme=d?'dark':'light';}catch(e){}})();</script>
+  <link rel="stylesheet" href="/static/serpiwi-ui.css"/>
+  <script src="/static/serpiwi-shell.js" defer></script>
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="/static/favicon-180x180.png" />
@@ -21,11 +24,11 @@
       --s1: 0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.08);
       --s2: 0 4px 14px rgba(124,58,237,.15), 0 2px 6px rgba(0,0,0,.06); --r: 16px;
     }
-    @media (prefers-color-scheme: dark) {
-      :root { --p: #c4b5fd; --p-h: #d6c9ff; --on-p: #2e1065; --p-c: #3c2a72; --on-p-c: #ede9fe;
+    
+html[data-theme="dark"] { --p: #c4b5fd; --p-h: #d6c9ff; --on-p: #2e1065; --p-c: #3c2a72; --on-p-c: #ede9fe;
         --accent: #f9a8d4; --surface: #1a1820; --surf-v: #241f2e; --bg: #110f17;
         --on-s: #e7e3f0; --on-s-v: #bcb4cd; --outline: #3a3348;
-        --s1: 0 1px 3px rgba(0,0,0,.4); --s2: 0 6px 18px rgba(0,0,0,.5); } }
+        --s1: 0 1px 3px rgba(0,0,0,.4); --s2: 0 6px 18px rgba(0,0,0,.5); } 
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body { font-family: 'Vazirmatn', system-ui, sans-serif; background: var(--bg); color: var(--on-s);
@@ -75,7 +78,8 @@
     details.settings summary .material-symbols-rounded { color: var(--p); }
     .alert { display: none; align-items: center; gap: 10px; background: #fdecec; color: var(--err);
       border: 1px solid #f5c2c2; border-radius: 12px; padding: 12px 15px; margin-bottom: 16px; font-size: .9rem; }
-    @media (prefers-color-scheme: dark) { .alert { background: #3a1414; border-color: #6b2020; color: #ffb4ab; } }
+    
+html[data-theme="dark"] .alert { background: #3a1414; border-color: #6b2020; color: #ffb4ab; } 
     .alert.show { display: flex; }
     .seg { display: flex; gap: 8px; margin-bottom: 16px; }
     .seg button { flex: 1; padding: 11px; border: 1.5px solid var(--outline); background: var(--surface);
@@ -90,7 +94,8 @@
     .qdel { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
       background: transparent; color: var(--on-s-v); display: grid; place-items: center; transition: all .15s; }
     .qdel:hover { background: #fdecec; color: var(--err); }
-    @media (prefers-color-scheme: dark) { .qdel:hover { background: #3a1414; color: #ffb4ab; } }
+    
+html[data-theme="dark"] .qdel:hover { background: #3a1414; color: #ffb4ab; } 
     .qdel .material-symbols-rounded { font-size: 19px; }
     .bar-track { height: 8px; border-radius: 999px; background: var(--surf-v); overflow: hidden; margin-bottom: 12px; }
     .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--p));
