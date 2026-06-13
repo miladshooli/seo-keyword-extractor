@@ -267,7 +267,7 @@ _PROFILE_HTML = """<!DOCTYPE html>
     </div>
     <div class="pcard">
       <h2><span class="material-symbols-rounded">palette</span> ظاهر</h2>
-      <div class="hint">حالت روشن/تیره را از دکمهٔ تم در نوار بالا تغییر دهید؛ انتخاب شما در همهٔ ابزارها ذخیره می‌شود.</div>
+      <div class="hint">حالت روشن/تیره را از دکمه تم در نوار بالا تغییر دهید؛ انتخاب شما در همه ابزارها ذخیره می‌شود.</div>
     </div>
   </div>
 </body>
