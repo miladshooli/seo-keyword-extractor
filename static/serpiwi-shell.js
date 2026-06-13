@@ -1,4 +1,4 @@
-/* Serpiwi shared shell: global nav, theme toggle, user menu. Loaded by every tool. */
+/* Serpiwi shared shell: global nav, theme toggle, user menu. Loaded at top of <body>. */
 (function () {
   var TOOLS = [
     { k: "home", label: "خانه", icon: "home" },
@@ -13,7 +13,6 @@
   if (labels.length > 2 && keys.indexOf(labels[0]) >= 0) { active = labels[0]; base = labels.slice(1).join("."); }
   var href = function (k) { return k === "home" ? ("https://" + base + "/") : ("https://" + k + "." + base + "/"); };
 
-  // ---- theme ----
   function getPref() {
     var m = document.cookie.match(/serpiwi_theme=(\w+)/);
     return m ? m[1] : (localStorage.getItem("serpiwi_theme") || "system");
@@ -29,7 +28,7 @@
   }
   function syncThemeUI(p) {
     var seg = document.getElementById("sp-themeseg");
-    if (seg) seg.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.dataset.t === p); });
+    if (seg) [].forEach.call(seg.querySelectorAll("button"), function (b) { b.classList.toggle("on", b.dataset.t === p); });
     var ic = document.getElementById("sp-themeicon");
     if (ic) ic.textContent = resolve(p) === "dark" ? "light_mode" : "dark_mode";
   }
@@ -37,10 +36,8 @@
     if (getPref() === "system") applyPref("system");
   });
 
-  // ---- build nav ----
   function build() {
     if (document.querySelector(".sp-nav")) return;
-    document.body.setAttribute("data-sp-shell", "");
     var nav = document.createElement("nav");
     nav.className = "sp-nav";
     var tabs = TOOLS.map(function (t) {
@@ -49,7 +46,8 @@
     }).join("");
     nav.innerHTML =
       '<div class="sp-nav-in">' +
-        '<a class="sp-brand" href="' + href("home") + '"><img src="/static/serpiwi-logo-color.png" alt="Serpiwi"/></a>' +
+        '<a class="sp-brand" href="' + href("home") + '"><img src="/static/serpiwi-icon.png" alt=""/>' +
+          '<span class="sp-wm">Serpiwi<span class="tld">.tools</span></span></a>' +
         '<div class="sp-tabs">' + tabs + "</div>" +
         '<div class="sp-actions">' +
           '<button class="sp-ibtn" id="sp-toggle" title="تغییر تم"><span class="material-symbols-rounded" id="sp-themeicon">dark_mode</span></button>' +
@@ -71,14 +69,13 @@
     document.getElementById("sp-toggle").addEventListener("click", function () {
       applyPref(resolve(getPref()) === "dark" ? "light" : "dark");
     });
-    document.getElementById("sp-themeseg").querySelectorAll("button").forEach(function (b) {
+    [].forEach.call(document.getElementById("sp-themeseg").querySelectorAll("button"), function (b) {
       b.addEventListener("click", function (e) { e.stopPropagation(); applyPref(b.dataset.t); });
     });
     var menu = document.getElementById("sp-menu");
     document.getElementById("sp-av").addEventListener("click", function (e) { e.stopPropagation(); menu.classList.toggle("open"); });
     document.addEventListener("click", function () { menu.classList.remove("open"); });
     menu.addEventListener("click", function (e) { e.stopPropagation(); });
-
     syncThemeUI(getPref());
     fetch("/whoami").then(function (r) { return r.json(); }).then(function (d) {
       if (d && d.user) {
@@ -87,6 +84,6 @@
       }
     }).catch(function () {});
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", build);
-  else build();
+  if (document.body) build();
+  else document.addEventListener("DOMContentLoaded", build);
 })();

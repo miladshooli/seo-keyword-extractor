@@ -184,7 +184,6 @@ _LOGIN_HTML = """<!DOCTYPE html>
     .err{background:#fdecec;color:var(--err);border:1px solid #f5c2c2;border-radius:10px;
       padding:9px 12px;font-size:.83rem;margin-bottom:14px;text-align:center}
     html[data-theme="dark"] .err{background:#3a1414;border-color:#6b2020;color:#ffb4ab}
-    html[data-theme="dark"] .head{background:#0f1614}
     .foot{text-align:center;font-size:.72rem;color:var(--muted);padding:0 24px 20px}
   </style>
 </head>
@@ -243,6 +242,7 @@ _PROFILE_HTML = """<!DOCTYPE html>
   </style>
 </head>
 <body>
+  <script src="/static/serpiwi-shell.js"></script>
   <div class="wrap">
     <div class="pcard">
       <div class="idrow">
@@ -270,6 +270,5 @@ _PROFILE_HTML = """<!DOCTYPE html>
       <div class="hint">حالت روشن/تیره را از دکمهٔ تم در نوار بالا تغییر دهید؛ انتخاب شما در همهٔ ابزارها ذخیره می‌شود.</div>
     </div>
   </div>
-  <script src="/static/serpiwi-shell.js" defer></script>
 </body>
 </html>""".replace("__HEAD_THEME__", _HEAD_THEME)

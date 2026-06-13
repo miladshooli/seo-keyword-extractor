@@ -1,10 +1,9 @@
-/* Serpiwi shared design system — global nav + theming.
-   Tools keep their own content CSS; this unifies the shell + dark mode. */
+/* Serpiwi shared design system — global nav, theming, shared field/card tokens. */
 :root{
   --sp-bg:#eef2f1; --sp-surface:#ffffff; --sp-surface-2:#f4f6f7;
   --sp-ink:#13201f; --sp-muted:#5a6b69; --sp-line:#e1e8e6;
   --sp-brand:#16a34a; --sp-brand-ink:#0a3d23; --sp-brand-soft:#dcfce7;
-  --sp-nav-h:58px; --sp-shadow:0 1px 3px rgba(0,0,0,.07);
+  --sp-nav-h:58px; --sp-shadow:0 1px 3px rgba(0,0,0,.07); --sp-radius:16px;
   color-scheme:light;
 }
 html[data-theme="dark"]{
@@ -14,30 +13,34 @@ html[data-theme="dark"]{
   --sp-shadow:0 1px 3px rgba(0,0,0,.5);
   color-scheme:dark;
 }
+/* reserve nav height so content never jumps when the bar paints */
+body{padding-top:var(--sp-nav-h)}
 .sp-nav{position:fixed;top:0;inset-inline:0;height:var(--sp-nav-h);z-index:1000;
   background:var(--sp-surface);border-bottom:1px solid var(--sp-line);box-shadow:var(--sp-shadow);
   font-family:'Vazirmatn',system-ui,sans-serif}
 .sp-nav *{box-sizing:border-box}
 .sp-nav-in{max-width:1100px;margin:0 auto;height:100%;display:flex;align-items:center;gap:14px;padding:0 16px}
-.sp-brand{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
-.sp-brand img{height:26px}
+.sp-brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.sp-brand img{height:28px}
+.sp-wm{font-weight:700;font-size:1.06rem;color:var(--sp-ink);letter-spacing:-.01em}
+.sp-wm .tld{color:var(--sp-muted);font-weight:600}
 .sp-tabs{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none}
 .sp-tabs::-webkit-scrollbar{display:none}
 .sp-tab{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;text-decoration:none;
-  color:var(--sp-muted);font-size:.88rem;font-weight:600;padding:8px 13px;border-radius:10px;transition:all .14s}
+  color:var(--sp-muted);font-size:.88rem;font-weight:600;padding:8px 13px;border-radius:10px;transition:background .14s,color .14s}
 .sp-tab:hover{background:var(--sp-surface-2);color:var(--sp-ink)}
 .sp-tab.active{color:var(--sp-brand);background:var(--sp-brand-soft)}
 .sp-tab .material-symbols-rounded{font-size:19px}
 .sp-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .sp-ibtn{width:38px;height:38px;border-radius:10px;border:none;cursor:pointer;background:transparent;
-  color:var(--sp-muted);display:grid;place-items:center;transition:all .14s;font-family:inherit}
+  color:var(--sp-muted);display:grid;place-items:center;transition:background .14s,color .14s;font-family:inherit}
 .sp-ibtn:hover{background:var(--sp-surface-2);color:var(--sp-ink)}
 .sp-ibtn .material-symbols-rounded{font-size:21px}
 .sp-user{position:relative}
 .sp-avatar{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;
   background:linear-gradient(135deg,var(--sp-brand),#6d28d9);color:#fff;font-weight:700;font-size:.9rem;
   display:grid;place-items:center;font-family:inherit}
-.sp-menu{position:absolute;inset-inline-end:0;top:46px;min-width:208px;background:var(--sp-surface);
+.sp-menu{position:absolute;inset-inline-end:0;top:46px;min-width:212px;background:var(--sp-surface);
   border:1px solid var(--sp-line);border-radius:14px;box-shadow:0 12px 34px rgba(0,0,0,.18);
   padding:8px;display:none;flex-direction:column;gap:2px}
 .sp-menu.open{display:flex}
@@ -51,9 +54,7 @@ html[data-theme="dark"]{
 .sp-menu .material-symbols-rounded{font-size:19px;color:var(--sp-muted)}
 .sp-menu .danger{color:#e0455e}
 .sp-menu .danger .material-symbols-rounded{color:#e0455e}
-body[data-sp-shell]{padding-top:var(--sp-nav-h)!important}
-/* theme menu */
 .sp-seg{display:flex;gap:4px;padding:6px 11px}
 .sp-seg button{flex:1;justify-content:center;border:1px solid var(--sp-line);border-radius:8px;padding:6px;font-size:.76rem}
 .sp-seg button.on{background:var(--sp-brand-soft);color:var(--sp-brand);border-color:transparent;font-weight:700}
-@media(max-width:560px){.sp-tab span.lbl{display:none}.sp-brand img{height:22px}}
+@media(max-width:560px){.sp-tab span.lbl{display:none}.sp-wm{display:none}}
